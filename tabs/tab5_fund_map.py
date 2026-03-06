@@ -147,12 +147,12 @@ def render(df_raw, df_funds, selected_funds):
         return styles
 
     if view_mode == "By Manager":
-        cols_to_keep = ['fund_name', 'formatted_address', 'overlap_pct', 'match_quality']
+        cols_to_keep = ['fund_name', 'formatted_address', 'phone', 'address_as_of_date', 'overlap_pct', 'match_quality']
         target_df = df_map[df_map['fund_name'] == sel_mgr][cols_to_keep].copy()
         peers_df = df_map[df_map['fund_name'] != sel_mgr][cols_to_keep].copy()
         peers_df = peers_df.sort_values('overlap_pct', ascending=False)
         table_df = pd.concat([target_df, peers_df])
-        table_df.columns = ['Fund Name', 'Interpreted Address', 'Overlap %', 'Quality']
+        table_df.columns = ['Fund Name', 'Interpreted Address', 'Phone', 'Details As Of', 'Overlap %', 'Quality']
         
         if not table_df.empty:
             st.dataframe(
@@ -161,9 +161,9 @@ def render(df_raw, df_funds, selected_funds):
             )
     else:
         # City Mode table
-        cols_to_keep = ['fund_name', 'formatted_address', 'match_quality']
+        cols_to_keep = ['fund_name', 'formatted_address', 'phone', 'address_as_of_date', 'match_quality']
         table_df = df_map[cols_to_keep].copy().sort_values('fund_name')
-        table_df.columns = ['Fund Name', 'Interpreted Address', 'Quality']
+        table_df.columns = ['Fund Name', 'Interpreted Address', 'Phone', 'Details As Of', 'Quality']
         
         if not table_df.empty:
             st.dataframe(

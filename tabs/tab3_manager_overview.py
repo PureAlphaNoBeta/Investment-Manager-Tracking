@@ -18,24 +18,6 @@ def render(df_filtered, df_raw, ticker_to_name, selected_funds, chart_template, 
         st.write("") # Vertical spacing
         exclude_synthetic = st.toggle("Exclude Synthetic Prices", key="tab3_exclude")
 
-    # --- Contact Details Overview ---
-    if not df_funds.empty:
-        fund_info = df_funds[df_funds['fund_name'] == sel_mgr]
-        if not fund_info.empty:
-            row = fund_info.iloc[0]
-            # Construct address string safely
-            addr_parts = [
-                row.get('address_street1'), row.get('address_street2'), 
-                row.get('address_city'), row.get('address_state'), row.get('address_zip')
-            ]
-            addr_clean = [str(p).strip() for p in addr_parts if p and pd.notna(p) and str(p).strip() != '']
-            full_address = ", ".join(addr_clean) if addr_clean else "N/A"
-            
-            phone = row.get('phone') if pd.notna(row.get('phone')) else "N/A"
-            updated = row.get('address_as_of_date') if pd.notna(row.get('address_as_of_date')) else "N/A"
-            
-            st.info(f"🏢 **Headquarters:** {full_address}  |  📞 **Phone:** {phone}  |  📅 **Details as of:** {updated}")
-
     # Filter manager data based on the toggle BEFORE determining available quarters
     df_mgr_base = df_filtered[df_filtered['fund_name'] == sel_mgr].copy()
     if exclude_synthetic:
