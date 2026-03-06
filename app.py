@@ -44,7 +44,11 @@ def load_database_data():
     df['report_date'] = pd.to_datetime(df['report_date'])
     df['put_call'] = df['put_call'].fillna('SHARE')
     df['Strategy'] = df['fund_name'].apply(lambda x: FUND_STRATEGIES.get(x, "Generalist"))
-    df['sector'] = df['sector'].fillna('Unknown').replace('', 'Unknown')
+    df['sector'] = df['sector'].fillna('').replace('Unknown', '')
+    is_acq = df['name_of_issuer'].str.contains('ACQUISITION|ACQUISTN|SPAC|ACQ', case=False, na=False)
+    is_empty_sector = (df['sector'] == '')
+    df.loc[is_empty_sector & is_acq, 'sector'] = 'ACQ Corps / SPACs'
+    df['sector'] = df['sector'].replace('', 'Unknown')
     
     df['pricing_fidelity'] = np.where(df['ticker'].str.startswith('BBG_'), 'Bloomberg (Premium)', 
                              np.where(df['ticker'].str.startswith('SYN_'), 'Implied (Synthetic)', 'Standard (Yahoo)'))
