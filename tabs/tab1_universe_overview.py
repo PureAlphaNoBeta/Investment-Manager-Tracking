@@ -198,7 +198,9 @@ def render(df_filtered, df_raw, ticker_to_name, chart_template, df_valid, df_pri
         1. **Popularity:** How many of the selected funds own the stock.
         2. **Conviction:** The average size of the position relative to the funds' total assets.
     * **Selection:** We combine these two scores. The 5 stocks with the best overall score (highest popularity and conviction combined) are chosen as the "Crowded Index" for that quarter.
-    * **Performance:** We then calculate the returns as if we invested an equal amount of money into each of these 5 stocks. The **Shadow Index** shows what happens if you bought those same 5 stocks, but waited 60 days after the quarter ended to buy them.
+    * **Performance:** We track how these 5 stocks perform as an equally-weighted portfolio over the next quarter. We show two return profiles:
+        * **Actual:** Assumes we buy the stocks on the very last day of the quarter (the "13F reporting date") and sell them on the last day of the following quarter.
+        * **Shadow:** Assumes a two-month delay. We buy the stocks 2 months after the quarter ends (which is closer to when 13F filings are actually published to the public) and sell them exactly one quarter later.
     ''')
 
     if not selected_backtest_funds:
