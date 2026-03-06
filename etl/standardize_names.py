@@ -21,7 +21,7 @@ def standardize_issuer_names():
     df_all_names = pd.read_sql(query, conn)
 
     # 2. Keep only the first occurrence of each CUSIP (which is the most recent name)
-    df_latest_names = df_all_names.drop_duplicates(subset=['cusip'], keep='first')
+    df_latest_names = df_all_names.drop_duplicates(subset=['cusip'], keep='first').copy()
     
     # Optional: You can still apply a light uppercase/strip here just to ensure the 
     # absolute latest name doesn't have weird trailing spaces from the SEC XML
